@@ -12,6 +12,8 @@ Checks for specific keywords associated with Office macros, indicating that the 
 rules aim to block requests that contain encoded slashes, encoded NULL bytes, UTF-8 or URL-encoded entities, or invalid characters in parameter names or values. 
 Such requests can be used to bypass WAF protections and exploit vulnerabilities in web applications. 
 The rules are based on OWASP guidelines for preventing evasion techniques used by attackers to bypass WAFs.
+
+
 #rule of modsecurity for exploit blind-SQLinjection , Unrestricted file upload include zipslip and based file upload race condition
 detect blind SQL injection attempts, ZipSlip attacks, and exploit tools such as w3af, ZAP, BurpSuite, and sqlmap. 
 The last rule is a whitelist that allows traffic from specified IP addresses.
