@@ -1,0 +1,6 @@
+SecRule FILES_TMPNAMES "@rx \.docx?$" "id:1000,chain,msg:'Office file upload',phase:2,t:none,t:lowercase,deny,status:403"
+SecRule FILES_TMPNAMES|FILES_NAMES "@pm .vbs .hta .js" "id:1001,chain,msg:'Office file upload',phase:2,t:none,t:lowercase,deny,status:403"
+SecRule MULTIPART_STRICT_ERROR "!@eq 0" "id:1002,phase:2,t:none,t:lowercase,deny,status:403"
+SecRule REQUEST_HEADERS:Content-Type "!@rx ^multipart/form-data.*" "id:1003,phase:2,t:none,t:lowercase,deny,status:403"
+SecRule FILES_TMPNAMES|FILES_NAMES|REQUEST_BODY "@rx \.[oO][dD][bB]\b|\.[rR][tT][fF]\b" "id:1004,chain,msg:'Office file upload',phase:2,t:none,t:lowercase,deny,status:403"
+SecRule FILES_TMPNAMES|FILES_NAMES|REQUEST_BODY "@rx (CreateObject|WScript.Shell|Shell.Application|Run|GetObject|Execute|Document_Open)" "id:1005,msg:'Office file macro',phase:2,t:none,t:lowercase,deny,status:403"
