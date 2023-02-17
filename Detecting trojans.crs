@@ -1,0 +1,2 @@
+SecRule REQUEST_BODY "@contains Trojan|Virus|Malware" "id:10007,phase:2,deny,status:403,msg:'Malware detected in request body'"
+SecRule REQUEST_BODY "@rx <script.*>\s*eval\s*\(" "id:10008,phase:2,deny,status:403,msg:'JavaScript Trojan detected in request body'"
