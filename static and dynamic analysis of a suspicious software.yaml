@@ -3,7 +3,7 @@ description: Detects suspicious software based on static and dynamic analysis
 status: experimental
 references:
     - https://www.usenix.org/conference/woot13/workshop-program/presentation/malware-analysis-systems
-author: Your Name
+author: meowut
 
 detection:
     selection:
