@@ -1,0 +1,12 @@
+SecRuleEngine On
+SecRule REQUEST_HEADERS:User-Agent "^\W*$" "deny,status:403,msg:'User-Agent is empty'"
+SecRule REQUEST_HEADERS:User-Agent "(?:\b(?:mozilla|netscape|opera|konqueror)\b|googlebot|msnbot|slurp|ask jeeves|ia_archiver)" "allow"
+SecRule REQUEST_METHOD "!^GET$" "deny,status:405,msg:'Method not allowed'"
+SecRule REQUEST_HEADERS:Referer "@eq 0" "deny,status:403,msg:'Referer is empty'"
+SecRule REQUEST_HEADERS:User-Agent "(?:[^\w\s\-\.\(\)\,;:@\/\\\+\=\&\?]+|<|>)" "deny,status:403,msg:'User-Agent contains invalid characters'"
+SecRule REQUEST_HEADERS:Referer "(?:[^\w\s\-\.\(\)\,;:@\/\\\+\=\&\?]+|<|>)" "deny,status:403,msg:'Referer contains invalid characters'"
+SecRule REQUEST_HEADERS:Cookie "(?:[^\w\s\-\.\(\)\,;:@\/\\\+\=\&\?]+|<|>)" "deny,status:403,msg:'Cookie contains invalid characters'"
+SecRule REQUEST_URI "\.((?i)php)(\?|/|$)" "deny,status:403,msg:'PHP file extension not allowed'"
+SecRule REQUEST_URI "\.((?i)(?:inc|htaccess|sql|conf|swp|bak|old))(\?|/|$)" "deny,status:403,msg:'File extension not allowed'"
+SecRule ARGS "@rx <script.*>" "deny,status:403,msg:'Script tag not allowed in request parameters'"
+SecRule ARGS "@rx (?i)on(load|unload|click|dblclick|mouseover|mousedown|mouseup|mousemove|submit)" "deny,status:403,msg:'JavaScript event handler not allowed in request parameters'"
