@@ -1,0 +1,2 @@
+SecRule REQUEST_HEADERS:User-Agent "(bash|nc|netcat|telnet|mkfifo|sh)" "id:10001,phase:2,deny,status:403,msg:'Reverse shell detected in User-Agent header'"
+SecRule REQUEST_HEADERS:User-Agent "(rm|mv|cp|chmod|chown|touch)" "id:10002,phase:2,deny,status:403,msg:'Malicious command detected in User-Agent header'"
