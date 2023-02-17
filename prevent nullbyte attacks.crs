@@ -1,0 +1,6 @@
+SecRule REQUEST_FILENAME "\.php$" \
+  "id:200,phase:1,t:none,t:urlDecodeUni,t:removeNulls,t:lowercase, \
+  pass,nolog,ctl:requestBodyProcessor=XML"
+SecRule REQUEST_FILENAME "\.php$" \
+  "id:201,phase:1,t:none,t:urlDecodeUni,t:removeNulls,t:lowercase, \
+  block,msg:'Null Byte Attack Detected',id:'2000'"
