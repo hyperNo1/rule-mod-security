@@ -1,0 +1,4 @@
+SecRule REQUEST_HEADERS:Content-Type "!^multipart/form-data" \
+  "id:200,phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=XML"
+SecRule MULTIPART_STRICT_ERROR "!@eq 0" \
+  "id:201,phase:1,t:none,t:lowercase,block,msg:'Magic Byte Attack Detected',id:'2001'"
