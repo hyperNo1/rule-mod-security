@@ -1,0 +1,73 @@
+# Block requests with encoded slashes
+SecRule REQUEST_URI "@contains \/..\/" \
+    "id:50001,\
+    phase:2,\
+    block,\
+    log,\
+    msg:'Directory traversal attempt with encoded slashes detected',\
+    severity:'CRITICAL',\
+    tag:'WEB_ATTACK/FILE_INJECTION',\
+    tag:'WAF_BYPASS/ENCODED_SLASHES',\
+    tag:'WAF_RULES'"
+    
+# Block requests with encoded NULL bytes
+SecRule ARGS "@contains \0" \
+    "id:50002,\
+    phase:2,\
+    block,\
+    log,\
+    msg:'Null byte detected in request',\
+    severity:'CRITICAL',\
+    tag:'WEB_ATTACK/FILE_INJECTION',\
+    tag:'WAF_BYPASS/ENCODED_NULL_BYTE',\
+    tag:'WAF_RULES'"
+    
+# Block requests with UTF-8 encoded entities
+SecRule REQUEST_URI|ARGS|REQUEST_HEADERS \
+    "@rx ((%[uU][0-9a-fA-F]{4})+)" \
+    "id:50003,\
+    phase:2,\
+    block,\
+    log,\
+    msg:'UTF-8 encoded entity detected in request',\
+    severity:'CRITICAL',\
+    tag:'WEB_ATTACK/UTF8_ENCODING',\
+    tag:'WAF_BYPASS/UTF8_ENCODING',\
+    tag:'WAF_RULES'"
+    
+# Block requests with URL encoded entities
+SecRule REQUEST_URI|ARGS|REQUEST_HEADERS \
+    "@rx ((%[0-9a-fA-F]{2})+)" \
+    "id:50004,\
+    phase:2,\
+    block,\
+    log,\
+    msg:'URL encoded entity detected in request',\
+    severity:'CRITICAL',\
+    tag:'WEB_ATTACK/FILE_INJECTION',\
+    tag:'WAF_BYPASS/URL_ENCODING',\
+    tag:'WAF_RULES'"
+    
+# Block requests with invalid characters in parameter names
+SecRule ARGS_NAMES "!@rx ^[a-zA-Z0-9_\.-]+$" \
+    "id:50005,\
+    phase:2,\
+    block,\
+    log,\
+    msg:'Request with invalid characters in parameter names detected',\
+    severity:'CRITICAL',\
+    tag:'WEB_ATTACK/INVALID_PARAMETER_NAMES',\
+    tag:'WAF_BYPASS/INVALID_PARAMETER_NAMES',\
+    tag:'WAF_RULES'"
+    
+# Block requests with invalid characters in parameter values
+SecRule ARGS "!@rx ^[ -~]+$" \
+    "id:50006,\
+    phase:2,\
+    block,\
+    log,\
+    msg:'Request with invalid characters in parameter values detected',\
+    severity:'CRITICAL',\
+    tag:'WEB_ATTACK/INVALID_PARAMETER_VALUES',\
+    tag:'WAF_BYPASS/INVALID_PARAMETER_VALUES',\
+    tag:'WAF_RULES'"
