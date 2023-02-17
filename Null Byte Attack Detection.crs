@@ -1,0 +1,4 @@
+SecRule FILES_NAMES|REQUEST_FILENAME "\.php$" \
+    "id:10000,phase:1,deny,status:400,\
+    t:none,log,msg:'Null Byte Attack Detected',\
+    chain,exec:/bin/echo %{FILES_NAMES} | grep -q -e '%00'"
