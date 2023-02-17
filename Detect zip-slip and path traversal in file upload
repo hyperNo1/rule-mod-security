@@ -1,0 +1,9 @@
+SecRule FILES_TMPNAMES "@inspectFile /usr/bin/unzip -l \"%{FILES_TMPNAMES}\" | grep -q '../'" \
+  "id:990004, phase:2, t:none, t:lowercase, deny, status:400, \
+  msg:'Zip-slip vulnerability detected in file upload', \
+  logdata:'Matched Data: %{MATCHED_DATA}', \
+  severity:'CRITICAL', \
+  tag:'application-multi', \
+  tag:'language-multi', \
+  tag:'platform-multi', \
+  tag:'attack-fileupload'"
