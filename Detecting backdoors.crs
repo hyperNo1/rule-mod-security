@@ -1,0 +1,2 @@
+SecRule REQUEST_HEADERS:User-Agent "(phpMyAdmin|wp-admin|backdoor|weevely)" "id:10005,phase:2,deny,status:403,msg:'Backdoor detected in User-Agent header'"
+SecRule REQUEST_URI "@contains /wso\.php" "id:10006,phase:2,deny,status:403,msg:'Web shell detected in request URI'"
