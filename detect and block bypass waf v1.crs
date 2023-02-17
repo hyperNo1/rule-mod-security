@@ -1,0 +1,17 @@
+SecRule REQUEST_HEADERS:User-Agent "(?i)(?:mozilla|opera|chrome|safari|msie|edge)" \
+    "id:100001,\
+    phase:1,\
+    block,\
+    t:none,\
+    msg:'User-Agent header does not appear to be a legitimate browser',\
+    logdata:'%{REQUEST_HEADERS.User-Agent}',\
+    severity:'CRITICAL',\
+    tag:'OWASP_CRS/PROTOCOL_VIOLATION/INVALID_REQ',\
+    tag:'WASCTC/WASC-21',\
+    tag:'OWASP_TOP_10/A7',\
+    tag:'PCI/6.5.10',\
+    ver:'OWASP_CRS/3.3.0',\
+    maturity:'9',\
+    accuracy:'9',\
+    rev:'1',\
+    ver:'OWASP_CRS/3.3.0'"
