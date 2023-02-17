@@ -1,0 +1,20 @@
+SecRule REQUEST_HEADERS:User-Agent "@rx (?:\b(?:eval\(|system\(|passthru\(|popen\(|exec\(|shell_exec\(|`|\\$\(.*\)\\$|\.sh)\b)" \
+"id:900000, \
+phase:2, \
+t:none, \
+log, \
+msg:'Potential Command Injection', \
+severity:CRITICAL, \
+tag:'EXECUTION/WEB', \
+tag:'WASCTC/WASC-31', \
+tag:'OWASP_TOP_10/A1', \
+tag:'PCI/6.5.2', \
+tag:'paranoia-level/2', \
+setvar:tx.paranoia_level=2, \
+setvar:'tx.injection_type=command', \
+setvar:'tx.msg=%{rule.msg}', \
+setvar:tx.anomaly_score=+%{tx.critical_anomaly_score}, \
+chain
+    SecRule ARGS "@validateUtf8 false" \
+    "setvar:tx.anomaly_score=+%{tx.critical_anomaly_score}, \
+    setvar:tx.msg=Attempted Command Injection - Invalid UTF8 Encoding"
