@@ -1,0 +1,2 @@
+SecRule REQUEST_FILENAME "\.(php|jsp|aspx|pl)$" "id:10003,phase:2,t:lowercase,deny,status:403,msg:'Webshell detected in filename'"
+SecRule REQUEST_BODY "@contains <?php|<%|<\?xml|<\?php" "id:10004,phase:2,deny,status:403,msg:'Webshell detected in request body'"
