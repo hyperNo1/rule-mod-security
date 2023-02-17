@@ -1,0 +1,16 @@
+# Blind SQL Injection
+SecRule ARGS|REQUEST_FILENAME "@rx ('|\")?\s*and\s+[1-9][0-9]*\s*(=|>|<)\s*[1-9][0-9]*" \
+        "id:100000,phase:2,t:none,t:urlDecodeUni,t:lowercase,deny,status:400,msg:'Blind SQL Injection detected.'"
+SecRule ARGS|REQUEST_FILENAME "@rx ('|\")?\s+or\s+[1-9][0-9]*\s*(=|>|<)\s*[1-9][0-9]*" \
+        "id:100001,phase:2,t:none,t:urlDecodeUni,t:lowercase,deny,status:400,msg:'Blind SQL Injection detected.'"
+
+# Unrestricted File Uploads (ZipSlip)
+SecRule FILES "@rx ((\.|\%2e|%2E){0,2}\/)+\.\.\/" \
+        "id:100002,phase:2,t:none,t:lowercase,deny,status:400,msg:'ZipSlip attack detected.'"
+
+# File Upload Race Condition
+SecRule REQUEST_HEADERS:User-Agent "@rx (w3af|ZAP|BurpSuite|sqlmap)" \
+        "id:100003,phase:1,t:none,t:lowercase,deny,status:400,msg:'Exploit tool detected.'"
+
+SecRule REMOTE_ADDR "@ipMatchFromFile /etc/modsecurity/ip_whitelist" \
+        "id:100004,phase:1,t:none,t:lowercase,allow,nolog,msg:'IP address is whitelisted.'"
