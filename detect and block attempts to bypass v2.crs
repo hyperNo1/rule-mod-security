@@ -1,0 +1,50 @@
+SecRule REQUEST_HEADERS:User-Agent "@pm ModSecurity CRS test tool" \
+    "id:100000, \
+    phase:1, \
+    block, \
+    t:lowercase, \
+    msg:'Potential WAF bypass detected', \
+    tag:'OWASP_CRS/WEB_ATTACK/PROTOCOL_VIOLATION', \
+    tag:'WAF Bypass Attempt', \
+    tag:'Attack Detection', \
+    logdata:'Matched Data: %{TX.0} found within %{MATCHED_VAR_NAME}: %{MATCHED_VAR}', \
+    severity:'CRITICAL', \
+    setvar:'tx.anomaly_score_pl1=+%{tx.critical_anomaly_score}', \
+    setvar:'tx.msg=%{rule.msg}', \
+    chain"
+
+SecRule ARGS "@rx (?i)(?<!\\d)1(?:-?\\d){5,12}(?!\\d)" \
+    "t:none, \
+    msg:'Potential WAF bypass detected. Found IP-like data in argument', \
+    tag:'OWASP_CRS/WEB_ATTACK/PROTOCOL_VIOLATION', \
+    tag:'WAF Bypass Attempt', \
+    tag:'Attack Detection', \
+    severity:'CRITICAL', \
+    setvar:'tx.anomaly_score_pl2=+%{tx.critical_anomaly_score}', \
+    setvar:'tx.msg=%{rule.msg}', \
+    chain"
+
+SecRule ARGS "@rx .+" \
+    "t:none, \
+    msg:'Potential WAF bypass detected. Argument payload does not match expected pattern', \
+    tag:'OWASP_CRS/WEB_ATTACK/PROTOCOL_VIOLATION', \
+    tag:'WAF Bypass Attempt', \
+    tag:'Attack Detection', \
+    severity:'CRITICAL', \
+    setvar:'tx.anomaly_score_pl3=+%{tx.critical_anomaly_score}', \
+    setvar:'tx.msg=%{rule.msg}', \
+    chain"
+
+SecRule ARGS "!@validateUtf8Encoding" \
+    "id:100001, \
+    phase:2, \
+    block, \
+    t:none, \
+    msg:'Potential WAF bypass detected. Argument payload is not valid UTF-8', \
+    tag:'OWASP_CRS/WEB_ATTACK/PROTOCOL_VIOLATION', \
+    tag:'WAF Bypass Attempt', \
+    tag:'Attack Detection', \
+    logdata:'Invalid UTF-8 sequence: %{TX.0}', \
+    severity:'CRITICAL', \
+    setvar:'tx.anomaly_score_pl4=+%{tx.critical_anomaly_score}', \
+    setvar:'tx.msg=%{rule.msg}'"
