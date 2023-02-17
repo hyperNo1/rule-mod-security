@@ -1,0 +1,4 @@
+SecRule FILES_NAMES|REQUEST_FILENAME "\.png$" \
+    "id:10002,phase:1,deny,status:400,\
+    t:none,log,msg:'Pixel Flood Attack Detected',\
+    chain,exec:/bin/echo %{FILES_TMPNAMES} | xargs -n1 -I{} sh -c 'identify -format '%w %h\n' {} | awk '{if (\$1 * \$2 > 250000) exit 1}'"
