@@ -1,0 +1,14 @@
+SecAction \
+  "id:990005, phase:2, t:none, \
+  setvar:tx.tmpfiles='/%{REQUEST_FILENAME}.%{UNIQUE_ID}.tmp', \
+  setenv:TMPFILES='%{tx.tmpfiles}'"
+  
+SecRule FILES_TMPNAMES "!@within %{TX.tmpfiles}" \
+  "id:990006, phase:2, t:none, t:lowercase, deny, status:400, \
+  msg:'Potential race condition detected in file upload', \
+  logdata:'Matched Data: %{MATCHED_DATA}', \
+  severity:'CRITICAL', \
+  tag:'application-multi', \
+  tag:'language-multi', \
+  tag:'platform-multi', \
+  tag:'attack-fileupload'"
