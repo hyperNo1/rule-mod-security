@@ -1,0 +1,30 @@
+title: Suspicious Software Analysis
+description: Detects suspicious software based on static and dynamic analysis
+status: experimental
+references:
+    - https://www.usenix.org/conference/woot13/workshop-program/presentation/malware-analysis-systems
+author: Your Name
+
+detection:
+    selection:
+        CommandLine:
+            - '*\Rundll32.exe * #99'
+            - '*\regsvr32.exe * #99'
+            - '*\wscript.exe * #99'
+            - '*\cscript.exe * #99'
+            - '*\mshta.exe * #99'
+            - '*\wmiprvse.exe * #99'
+        ParentCommandLine:
+            - '*\Explorer.exe *'
+
+    condition: selection
+    fields: [CommandLine, ParentCommandLine, ImagePath, ProcessId, ParentProcessId]
+
+falsepositives:
+    - Legitimate use of rundll32.exe, regsvr32.exe, wscript.exe, cscript.exe, mshta.exe, wmiprvse.exe and Explorer.exe
+
+level: high
+tags:
+    - suspicious
+    - static analysis
+    - dynamic analysis
