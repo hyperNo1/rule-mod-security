@@ -1,0 +1,4 @@
+SecRule FILES_NAMES|REQUEST_FILENAME "\.jpg$" \
+    "id:10001,phase:1,deny,status:400,\
+    t:none,log,msg:'Magic Byte Attack Detected',\
+    chain,exec:/bin/echo %{FILES_TMPNAMES} | xargs -n1 -I{} sh -c 'file {} | grep -q -e PHP|JSP|ASP'"
