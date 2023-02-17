@@ -1,0 +1,4 @@
+SecRule REQUEST_HEADERS:Content-Type "image/(jpeg|png|gif)" \
+  "id:200,phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=XML"
+SecRule REQUEST_BODY "@rx (?i)<img\s+src=.*pixel.*>" \
+  "id:201,phase:2,t:none,t:lowercase,block,msg:'Pixel Flooding Attack Detected',id:'2002'"
